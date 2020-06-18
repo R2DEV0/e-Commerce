@@ -1,0 +1,75 @@
+@model Product
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/style.css"/>
+    <title>Products</title>
+</head>
+<body>
+    <div class="container">
+        <div class="col-8 offset-2 mt-3 row text-center">
+            <div class="col-sm-2"> <a href="/">Dashboard</a> </div>|
+            <div class="col-sm-2"> Products </div>|
+            <div class="col-sm-2"> <a href="/orders">Orders</a> </div>|
+            <div class="col-sm-2"> <a href="/customers">Customers</a> </div>|
+            <div class="col-sm-2"> <a href="/">Settings</a> </div>
+        </div>
+        <div class="col-12 row mt-5">
+            <div class="col-5">
+                <form method="POST" class="form">
+                    <input class="col-sm-5 form-control mb-1" placeholder="search...">
+                    <button class="btn btn-secondary offset-3"> Filter </button>
+                </form>
+                <h5 style="text-decoration: underline;" class="mt-5 mb-2"> Add a new product </h5>
+                <form asp-action="NewProduct" asp-controller="Home" method="POST" class="form">
+                    <div class="form-group">
+                        <label for="Name"> Name: </label>
+                        <input asp-for="Name" class="col-sm-5 form-control">
+                        <span class="col-sm-12 text-danger text-center" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="ImageUrl"> Image (url): </label>
+                        <input asp-for="ImageUrl" class="col-sm-5 form-control" placeholder="http://">
+                        <span class="col-sm-12 text-danger text-center" asp-validation-for="ImageUrl"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description"> Description: </label>
+                        <textarea asp-for="Description" class="col-sm-5 form-control" rows="5"></textarea>
+                        <span class="col-sm-12 text-danger text-center" asp-validation-for="Description"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="Count" class="mb-1"> Initial Quantity: </label>
+                        <select asp-for="Count" class="col-sm-5 form-control">
+                            <option value="1"> 1 </option>
+                            <option value="2"> 2 </option>
+                            <option value="3"> 3 </option>
+                            <option value="4"> 4 </option>
+                            <option value="5"> 5 </option>
+                            <option value="6"> 6 </option>
+                            <option value="7"> 7 </option>
+                            <option value="8"> 8 </option>
+                            <option value="9"> 9 </option>
+                            <option value="10"> 10 </option>
+                        </select>
+                        <span class="col-sm-12 text-danger text-center" asp-validation-for="Count"></span>
+                    </div>
+                    <button class="btn btn-success btn offset-3"> Create </button>
+                </form>
+            </div>
+
+            <div class="col-7">
+                    @foreach(var item in ViewBag.Products)
+                    {
+                            <div style="display: inline-block;" class="col-3">
+                                <img style="max-height: 100px;" src="@item.ImageUrl" alt="Product Image">
+                                <p> @item.Name </p> 
+                                <p>(@item.Count left) </p>
+                            </div> 
+                    }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,96 @@
+﻿@model List<Customer>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/style.css"/>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="col-8 offset-2 mt-3 row text-center">
+            <div class="col-sm-2"> Dashboard </div>|
+            <div class="col-sm-2"> <a href="/products">Products</a> </div>|
+            <div class="col-sm-2"> <a href="/orders">Orders</a> </div>|
+            <div class="col-sm-2"> <a href="/customers">Customers</a> </div>|
+            <div class="col-sm-2"> <a href="/">Settings</a> </div>
+        </div>
+        <div class="col-12 row">
+            <div class="col-sm-2">
+                <form asp-action="Filter" asp-controller="Home" method="POST">
+                    <div class="form-group mt-3 mb-1">
+                        <input type="text" name="filter" placeholder="search..." class=" col-12 form-control">
+                    </div>
+                    <button class="btn btn-success btn-sm">Filter</button>
+                </form>
+            </div>
+            <div class="col-8 mt-4" style="display: inline-block;">
+                @foreach(var item in ViewBag.products)
+                {
+                    <div style="display: inline-block;" class="col-2">
+                        <img style="max-height: 100px;" src="@item.ImageUrl" alt="Product Image">
+                        <p> @item.Name </p> 
+                        <p>(@item.Count left) </p>
+                    </div> 
+                }
+                <div class="col-12 offset-1">
+                    <a href="/products">show more...</a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="col-8 offset-2 mt-4">
+            <div>
+                <h5 style="text-decoration: underline;">Recent Orders</h5>
+            </div>
+            <div>
+                <ul>
+                    @foreach (var order in ViewBag.RecentOrders)
+                    {
+                        int timePassed = (int)DateTime.Now.Subtract(@order.CreatedAt).TotalMinutes;
+                        string time = "";
+                        if(timePassed > 60)
+                        {
+                            timePassed = (int)DateTime.Now.Subtract(@order.CreatedAt).TotalHours;
+                            time = timePassed.ToString() + " hours";
+                        }
+                        else
+                        {
+                            time = timePassed.ToString()+" minutes";
+                        }
+                        <li> @order.Customer.Name purchased @order.Count @order.Product.Name... @time ago </li>
+                    }
+                </ul>
+                <a href="/orders"> show all orders... </a>
+            </div>
+        </div>
+        <hr>
+        <div class="col-8 offset-2 mt-4">
+            <div>
+                <h5 style="text-decoration: underline;">New Customers</h5>
+            </div>
+            <div>
+                <ul>
+                    @foreach (Customer person in Model)
+                    {
+                        int timePassed = (int)DateTime.Now.Subtract(@person.CreatedAt).TotalMinutes;
+                        string time = "";
+                        if(timePassed > 60)
+                        {
+                            timePassed = (int)DateTime.Now.Subtract(@person.CreatedAt).TotalHours;
+                            time = timePassed.ToString() + " hours";
+                        }
+                        else
+                        {
+                            time = timePassed.ToString()+" minutes";
+                        }
+                        <li> @person.Name joined the store @time ago.</li>
+                    }
+                </ul>
+                <a href="/customers"> show all customers </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
